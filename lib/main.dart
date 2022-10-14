@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_player/logic/media_folders.dart';
 import 'package:music_player/logic/player.dart';
 import 'package:music_player/widgets/player_bar.dart';
 
-import 'models/music_player.dart';
+import 'models/media.dart';
+import 'widgets/main_view.dart';
 import 'widgets/top_bar.dart';
 
 void main() {
@@ -24,7 +26,6 @@ class MyApp extends HookConsumerWidget {
       primary: const Color.fromARGB(255, 37, 137, 144),
       secondary: const Color.fromARGB(255, 248, 206, 196),
     );
-    final player = ref.watch(musicPlayerProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -50,33 +51,35 @@ class MyApp extends HookConsumerWidget {
           color: Color.fromARGB(255, 35, 37, 48),
           child: Column(
             children: [
-              TopBar(),
-              Spacer(),
-              Container(
-                height: 100,
-                child: TextButton(
-                  child: Text("AAA"),
-                  onPressed: () async {
-                    final LocalMedia media = LocalMedia(
-                      file: File('/home/flafydev/Music/music.mp3'),
-                      metadata: MediaMetadata(
-                        title: "Dance in the Game [ORCHESTRAL]",
-                        authors: ["Kikuin Date"],
-                        squareImage: const NetworkImage(
-                          "https://cdn.dribbble.com/users/702789/screenshots/16900790/media/628a8bb9f58f4feaea51367fc58b32a3.png?compress=1&resize=400x300",
-                        ),
-                      ),
-                    );
-                    ref.read(musicPlayerProvider.notifier).playMedia(media);
-                     // final player = aa.AudioPlayer();
-                     // player.play(aa.DeviceFileSource("/home/flafydev/Music/music.mp3"));
-                     // player.onPositionChanged.listen((pos) => print(pos));
-                    // final duration =
-                    //     await player.setFilePath('/home/flafydev/Music/music.mp3');
-                    // print(duration);
-                  },
-                ),
-              ),
+              // TopBar(),
+              Expanded(child: MainView()),
+              // Container(
+              //   height: 100,
+              //   child: TextButton(
+              //     child: Text("AAA"),
+              //     onPressed: () async {
+              //       // final LocalMedia media = LocalMedia(
+              //       //   id: "music",
+              //       //   file: File('/home/flafydev/Music/music.mp3'),
+              //       //   metadata: MediaMetadata(
+              //       //     title: "Dance in the Game [ORCHESTRAL]",
+              //       //     authors: ["Kikuin Date"],
+              //       //     squareImage: const NetworkImage(
+              //       //       "https://cdn.dribbble.com/users/702789/screenshots/16900790/media/628a8bb9f58f4feaea51367fc58b32a3.png?compress=1&resize=400x300",
+              //       //     ),
+              //       //   ),
+              //       // );
+              //       ref.read(musicPlayerProvider.notifier).playMedia(mediaInfo[mediaInfo.keys.first]!);
+              //        // final player = aa.AudioPlayer();
+              //        // player.play(aa.DeviceFileSource("/home/flafydev/Music/music.mp3"));
+              //        // player.onPositionChanged.listen((pos) => print(pos));
+              //       // final duration =
+              //       //     await player.setFilePath('/home/flafydev/Music/music.mp3');
+              //       // print(duration);
+              //     },
+              //   ),
+              // ),
+              // Container(child: Text(mediaInfo.length.toString())),
               Container(child: PlayerBar()),
             ],
           ),

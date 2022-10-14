@@ -15,10 +15,152 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
+mixin _$MediaCollectionFile {
+  File get file => throw _privateConstructorUsedError;
+  Map<String, LocalMedia> get media => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $MediaCollectionFileCopyWith<MediaCollectionFile> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MediaCollectionFileCopyWith<$Res> {
+  factory $MediaCollectionFileCopyWith(
+          MediaCollectionFile value, $Res Function(MediaCollectionFile) then) =
+      _$MediaCollectionFileCopyWithImpl<$Res>;
+  $Res call({File file, Map<String, LocalMedia> media});
+}
+
+/// @nodoc
+class _$MediaCollectionFileCopyWithImpl<$Res>
+    implements $MediaCollectionFileCopyWith<$Res> {
+  _$MediaCollectionFileCopyWithImpl(this._value, this._then);
+
+  final MediaCollectionFile _value;
+  // ignore: unused_field
+  final $Res Function(MediaCollectionFile) _then;
+
+  @override
+  $Res call({
+    Object? file = freezed,
+    Object? media = freezed,
+  }) {
+    return _then(_value.copyWith(
+      file: file == freezed
+          ? _value.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as File,
+      media: media == freezed
+          ? _value.media
+          : media // ignore: cast_nullable_to_non_nullable
+              as Map<String, LocalMedia>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_MediaCollectionFileCopyWith<$Res>
+    implements $MediaCollectionFileCopyWith<$Res> {
+  factory _$$_MediaCollectionFileCopyWith(_$_MediaCollectionFile value,
+          $Res Function(_$_MediaCollectionFile) then) =
+      __$$_MediaCollectionFileCopyWithImpl<$Res>;
+  @override
+  $Res call({File file, Map<String, LocalMedia> media});
+}
+
+/// @nodoc
+class __$$_MediaCollectionFileCopyWithImpl<$Res>
+    extends _$MediaCollectionFileCopyWithImpl<$Res>
+    implements _$$_MediaCollectionFileCopyWith<$Res> {
+  __$$_MediaCollectionFileCopyWithImpl(_$_MediaCollectionFile _value,
+      $Res Function(_$_MediaCollectionFile) _then)
+      : super(_value, (v) => _then(v as _$_MediaCollectionFile));
+
+  @override
+  _$_MediaCollectionFile get _value => super._value as _$_MediaCollectionFile;
+
+  @override
+  $Res call({
+    Object? file = freezed,
+    Object? media = freezed,
+  }) {
+    return _then(_$_MediaCollectionFile(
+      file: file == freezed
+          ? _value.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as File,
+      media: media == freezed
+          ? _value._media
+          : media // ignore: cast_nullable_to_non_nullable
+              as Map<String, LocalMedia>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_MediaCollectionFile implements _MediaCollectionFile {
+  const _$_MediaCollectionFile(
+      {required this.file, required final Map<String, LocalMedia> media})
+      : _media = media;
+
+  @override
+  final File file;
+  final Map<String, LocalMedia> _media;
+  @override
+  Map<String, LocalMedia> get media {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_media);
+  }
+
+  @override
+  String toString() {
+    return 'MediaCollectionFile(file: $file, media: $media)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_MediaCollectionFile &&
+            const DeepCollectionEquality().equals(other.file, file) &&
+            const DeepCollectionEquality().equals(other._media, _media));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(file),
+      const DeepCollectionEquality().hash(_media));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_MediaCollectionFileCopyWith<_$_MediaCollectionFile> get copyWith =>
+      __$$_MediaCollectionFileCopyWithImpl<_$_MediaCollectionFile>(
+          this, _$identity);
+}
+
+abstract class _MediaCollectionFile implements MediaCollectionFile {
+  const factory _MediaCollectionFile(
+      {required final File file,
+      required final Map<String, LocalMedia> media}) = _$_MediaCollectionFile;
+
+  @override
+  File get file;
+  @override
+  Map<String, LocalMedia> get media;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MediaCollectionFileCopyWith<_$_MediaCollectionFile> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$MediaMetadata {
   String get title => throw _privateConstructorUsedError;
   List<String> get authors => throw _privateConstructorUsedError;
-  ImageProvider<Object> get squareImage => throw _privateConstructorUsedError;
+  ImageProvider<Object>? get squareImage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MediaMetadataCopyWith<MediaMetadata> get copyWith =>
@@ -31,7 +173,7 @@ abstract class $MediaMetadataCopyWith<$Res> {
           MediaMetadata value, $Res Function(MediaMetadata) then) =
       _$MediaMetadataCopyWithImpl<$Res>;
   $Res call(
-      {String title, List<String> authors, ImageProvider<Object> squareImage});
+      {String title, List<String> authors, ImageProvider<Object>? squareImage});
 }
 
 /// @nodoc
@@ -61,7 +203,7 @@ class _$MediaMetadataCopyWithImpl<$Res>
       squareImage: squareImage == freezed
           ? _value.squareImage
           : squareImage // ignore: cast_nullable_to_non_nullable
-              as ImageProvider<Object>,
+              as ImageProvider<Object>?,
     ));
   }
 }
@@ -74,7 +216,7 @@ abstract class _$$_MediaMetadataCopyWith<$Res>
       __$$_MediaMetadataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String title, List<String> authors, ImageProvider<Object> squareImage});
+      {String title, List<String> authors, ImageProvider<Object>? squareImage});
 }
 
 /// @nodoc
@@ -106,7 +248,7 @@ class __$$_MediaMetadataCopyWithImpl<$Res>
       squareImage: squareImage == freezed
           ? _value.squareImage
           : squareImage // ignore: cast_nullable_to_non_nullable
-              as ImageProvider<Object>,
+              as ImageProvider<Object>?,
     ));
   }
 }
@@ -117,7 +259,7 @@ class _$_MediaMetadata implements _MediaMetadata {
   const _$_MediaMetadata(
       {required this.title,
       required final List<String> authors,
-      required this.squareImage})
+      this.squareImage})
       : _authors = authors;
 
   @override
@@ -130,7 +272,7 @@ class _$_MediaMetadata implements _MediaMetadata {
   }
 
   @override
-  final ImageProvider<Object> squareImage;
+  final ImageProvider<Object>? squareImage;
 
   @override
   String toString() {
@@ -165,14 +307,14 @@ abstract class _MediaMetadata implements MediaMetadata {
   const factory _MediaMetadata(
       {required final String title,
       required final List<String> authors,
-      required final ImageProvider<Object> squareImage}) = _$_MediaMetadata;
+      final ImageProvider<Object>? squareImage}) = _$_MediaMetadata;
 
   @override
   String get title;
   @override
   List<String> get authors;
   @override
-  ImageProvider<Object> get squareImage;
+  ImageProvider<Object>? get squareImage;
   @override
   @JsonKey(ignore: true)
   _$$_MediaMetadataCopyWith<_$_MediaMetadata> get copyWith =>
@@ -182,8 +324,10 @@ abstract class _MediaMetadata implements MediaMetadata {
 /// @nodoc
 mixin _$MusicPlayer {
   Duration get passed => throw _privateConstructorUsedError;
-  Duration get length => throw _privateConstructorUsedError;
-  PlayableMedia? get currentMedia => throw _privateConstructorUsedError;
+  Duration get length =>
+      throw _privateConstructorUsedError; // @Default(null) PlayableMedia? currentMedia,
+  List<PlayableMedia> get queue => throw _privateConstructorUsedError;
+  List<PlayableMedia> get history => throw _privateConstructorUsedError;
   bool get playing => throw _privateConstructorUsedError;
   bool get shuffle => throw _privateConstructorUsedError;
   bool get loop => throw _privateConstructorUsedError;
@@ -201,7 +345,8 @@ abstract class $MusicPlayerCopyWith<$Res> {
   $Res call(
       {Duration passed,
       Duration length,
-      PlayableMedia? currentMedia,
+      List<PlayableMedia> queue,
+      List<PlayableMedia> history,
       bool playing,
       bool shuffle,
       bool loop});
@@ -219,7 +364,8 @@ class _$MusicPlayerCopyWithImpl<$Res> implements $MusicPlayerCopyWith<$Res> {
   $Res call({
     Object? passed = freezed,
     Object? length = freezed,
-    Object? currentMedia = freezed,
+    Object? queue = freezed,
+    Object? history = freezed,
     Object? playing = freezed,
     Object? shuffle = freezed,
     Object? loop = freezed,
@@ -233,10 +379,14 @@ class _$MusicPlayerCopyWithImpl<$Res> implements $MusicPlayerCopyWith<$Res> {
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
               as Duration,
-      currentMedia: currentMedia == freezed
-          ? _value.currentMedia
-          : currentMedia // ignore: cast_nullable_to_non_nullable
-              as PlayableMedia?,
+      queue: queue == freezed
+          ? _value.queue
+          : queue // ignore: cast_nullable_to_non_nullable
+              as List<PlayableMedia>,
+      history: history == freezed
+          ? _value.history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<PlayableMedia>,
       playing: playing == freezed
           ? _value.playing
           : playing // ignore: cast_nullable_to_non_nullable
@@ -263,7 +413,8 @@ abstract class _$$_MusicPlayerCopyWith<$Res>
   $Res call(
       {Duration passed,
       Duration length,
-      PlayableMedia? currentMedia,
+      List<PlayableMedia> queue,
+      List<PlayableMedia> history,
       bool playing,
       bool shuffle,
       bool loop});
@@ -283,7 +434,8 @@ class __$$_MusicPlayerCopyWithImpl<$Res> extends _$MusicPlayerCopyWithImpl<$Res>
   $Res call({
     Object? passed = freezed,
     Object? length = freezed,
-    Object? currentMedia = freezed,
+    Object? queue = freezed,
+    Object? history = freezed,
     Object? playing = freezed,
     Object? shuffle = freezed,
     Object? loop = freezed,
@@ -297,10 +449,14 @@ class __$$_MusicPlayerCopyWithImpl<$Res> extends _$MusicPlayerCopyWithImpl<$Res>
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
               as Duration,
-      currentMedia: currentMedia == freezed
-          ? _value.currentMedia
-          : currentMedia // ignore: cast_nullable_to_non_nullable
-              as PlayableMedia?,
+      queue: queue == freezed
+          ? _value._queue
+          : queue // ignore: cast_nullable_to_non_nullable
+              as List<PlayableMedia>,
+      history: history == freezed
+          ? _value._history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<PlayableMedia>,
       playing: playing == freezed
           ? _value.playing
           : playing // ignore: cast_nullable_to_non_nullable
@@ -323,10 +479,13 @@ class _$_MusicPlayer implements _MusicPlayer {
   const _$_MusicPlayer(
       {this.passed = Duration.zero,
       this.length = Duration.zero,
-      this.currentMedia = null,
+      final List<PlayableMedia> queue = const [],
+      final List<PlayableMedia> history = const [],
       this.playing = false,
       this.shuffle = false,
-      this.loop = false});
+      this.loop = false})
+      : _queue = queue,
+        _history = history;
 
   @override
   @JsonKey()
@@ -334,9 +493,24 @@ class _$_MusicPlayer implements _MusicPlayer {
   @override
   @JsonKey()
   final Duration length;
+// @Default(null) PlayableMedia? currentMedia,
+  final List<PlayableMedia> _queue;
+// @Default(null) PlayableMedia? currentMedia,
   @override
   @JsonKey()
-  final PlayableMedia? currentMedia;
+  List<PlayableMedia> get queue {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_queue);
+  }
+
+  final List<PlayableMedia> _history;
+  @override
+  @JsonKey()
+  List<PlayableMedia> get history {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_history);
+  }
+
   @override
   @JsonKey()
   final bool playing;
@@ -349,7 +523,7 @@ class _$_MusicPlayer implements _MusicPlayer {
 
   @override
   String toString() {
-    return 'MusicPlayer(passed: $passed, length: $length, currentMedia: $currentMedia, playing: $playing, shuffle: $shuffle, loop: $loop)';
+    return 'MusicPlayer(passed: $passed, length: $length, queue: $queue, history: $history, playing: $playing, shuffle: $shuffle, loop: $loop)';
   }
 
   @override
@@ -359,8 +533,8 @@ class _$_MusicPlayer implements _MusicPlayer {
             other is _$_MusicPlayer &&
             const DeepCollectionEquality().equals(other.passed, passed) &&
             const DeepCollectionEquality().equals(other.length, length) &&
-            const DeepCollectionEquality()
-                .equals(other.currentMedia, currentMedia) &&
+            const DeepCollectionEquality().equals(other._queue, _queue) &&
+            const DeepCollectionEquality().equals(other._history, _history) &&
             const DeepCollectionEquality().equals(other.playing, playing) &&
             const DeepCollectionEquality().equals(other.shuffle, shuffle) &&
             const DeepCollectionEquality().equals(other.loop, loop));
@@ -371,7 +545,8 @@ class _$_MusicPlayer implements _MusicPlayer {
       runtimeType,
       const DeepCollectionEquality().hash(passed),
       const DeepCollectionEquality().hash(length),
-      const DeepCollectionEquality().hash(currentMedia),
+      const DeepCollectionEquality().hash(_queue),
+      const DeepCollectionEquality().hash(_history),
       const DeepCollectionEquality().hash(playing),
       const DeepCollectionEquality().hash(shuffle),
       const DeepCollectionEquality().hash(loop));
@@ -386,7 +561,8 @@ abstract class _MusicPlayer implements MusicPlayer {
   const factory _MusicPlayer(
       {final Duration passed,
       final Duration length,
-      final PlayableMedia? currentMedia,
+      final List<PlayableMedia> queue,
+      final List<PlayableMedia> history,
       final bool playing,
       final bool shuffle,
       final bool loop}) = _$_MusicPlayer;
@@ -395,8 +571,10 @@ abstract class _MusicPlayer implements MusicPlayer {
   Duration get passed;
   @override
   Duration get length;
+  @override // @Default(null) PlayableMedia? currentMedia,
+  List<PlayableMedia> get queue;
   @override
-  PlayableMedia? get currentMedia;
+  List<PlayableMedia> get history;
   @override
   bool get playing;
   @override

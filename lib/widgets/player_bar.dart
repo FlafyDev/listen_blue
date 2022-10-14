@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:music_player/logic/player.dart';
+import 'package:music_player/models/media.dart';
+import 'package:music_player/widgets/media_horizontal_card.dart';
 
 class PlayerBar extends HookConsumerWidget {
   const PlayerBar({Key? key}) : super(key: key);
@@ -58,80 +60,61 @@ class PlayerBar extends HookConsumerWidget {
                               children: [
                                 Icon(FontAwesomeIcons.backwardStep, size: 20),
                                 SizedBox(width: 5),
-                                MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: InkWell(
-                                    onTap: () {
-                                      ref
-                                          .read(musicPlayerProvider.notifier)
-                                          .togglePlay();
-                                    },
-                                    child: Icon(
-                                      player.playing
-                                          ? FontAwesomeIcons.pause
-                                          : FontAwesomeIcons.play,
-                                      size: 30,
-                                      color: theme.colorScheme.primary,
-                                    ),
+                                _PressableIcon(
+                                  onTap: () {
+                                    ref
+                                        .read(musicPlayerProvider.notifier)
+                                        .togglePlay();
+                                  },
+                                  child: Icon(
+                                    player.playing
+                                        ? FontAwesomeIcons.pause
+                                        : FontAwesomeIcons.play,
+                                    size: 30,
+                                    color: theme.colorScheme.primary,
                                   ),
                                 ),
                                 SizedBox(width: 5),
                                 Icon(FontAwesomeIcons.forwardStep, size: 20),
                                 SizedBox(width: 10),
-                                Icon(FontAwesomeIcons.shuffle,
+                                _PressableIcon(
+                                  onTap: () {
+                                    ref
+                                        .read(musicPlayerProvider.notifier)
+                                        .shuffleQueue();
+                                  },
+                                  child: Icon(
+                                    FontAwesomeIcons.shuffle,
                                     size: 20,
-                                    color: theme.toggleableActiveColor),
+                                  ),
+                                ),
                                 SizedBox(width: 10),
-                                Icon(FontAwesomeIcons.repeat, size: 17),
+                                _PressableIcon(
+                                  onTap: () {
+                                    ref
+                                        .read(musicPlayerProvider.notifier)
+                                        .toggleLoop();
+                                  },
+                                  child: Icon(
+                                    FontAwesomeIcons.repeat,
+                                    size: 18,
+                                    color: player.loop
+                                        ? theme.toggleableActiveColor
+                                        : null,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                           SizedBox(width: 50),
-                          if (player.currentMedia != null)
+                          // Spacer(),
+                          if (player.queue.isNotEmpty)
                             Flexible(
                               child: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      child: Image(
-                                        image: player
-                                            .currentMedia!.metadata.squareImage,
-                                        width: 40,
-                                        height: 40,
-                                        fit: BoxFit.cover,
-                                        filterQuality: FilterQuality.medium,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            player.currentMedia!.metadata.title,
-                                            style: theme.textTheme.bodyLarge,
-                                            overflow: TextOverflow.clip,
-                                            softWrap: false,
-                                            maxLines: 1,
-                                          ),
-                                          Text(
-                                            player
-                                                .currentMedia!.metadata.authors
-                                                .join(", "),
-                                            style: theme.textTheme.bodySmall,
-                                            overflow: TextOverflow.clip,
-                                            softWrap: false,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                constraints:
+                                    const BoxConstraints(maxWidth: 300),
+                                child: MediaHorizontalCard(
+                                  media: player.queue.first,
                                 ),
                               ),
                             ),
@@ -172,6 +155,28 @@ class PlayerBar extends HookConsumerWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PressableIcon extends StatelessWidget {
+  const _PressableIcon({
+    Key? key,
+    required this.onTap,
+    required this.child,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: InkWell(
+        onTap: onTap,
+        child: child,
       ),
     );
   }

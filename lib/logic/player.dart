@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/models/music_player.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:music_player/models/media.dart';
 
 final musicPlayerProgressProvider = Provider<double>((ref) {
   final player = ref.watch(musicPlayerProvider);
@@ -24,19 +24,20 @@ final musicPlayerProvider =
 
 class MusicPlayerNotifier extends StateNotifier<MusicPlayer> {
   final AudioPlayer _audioPlayer;
+
   MusicPlayerNotifier(this._audioPlayer) : super(const MusicPlayer()) {
     _audioPlayer.onPositionChanged.listen((position) {
       state = state.copyWith(passed: position);
     });
 
-    _audioPlayer.onPlayerStateChanged.listen((playingState) {
+    _audioPlayer.onPlayerStateChanged.listen((playingState) async {
       state = state.copyWith(playing: playingState == PlayerState.playing);
       if (playingState == PlayerState.completed) {
-        state = state.copyWith(
-          passed: Duration.zero,
-          length: Duration.zero,
-          currentMedia: null,
-        );
+        if (state.loop) {
+          await _play(state.queue.first);
+        } else {
+          await nextInQueue();
+        }
       }
     });
 
@@ -45,28 +46,75 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayer> {
     });
   }
 
-  Future<void> playMedia(PlayableMedia media) async {
+  Future<void> stopAll() async {
     await _audioPlayer.stop();
+    state = state.copyWith(
+      passed: Duration.zero,
+      length: Duration.zero,
+      queue: [],
+    );
+  }
 
-    state = state.copyWith(currentMedia: media, passed: Duration.zero);
-    if (media is LocalMedia) {
-      await _audioPlayer.play(DeviceFileSource(media.file.path));
+  Future<void> nextInQueue() async {
+    if (state.queue.length <= 1) {
+      return stopAll();
+    }
+
+    state = state.copyWith(queue: state.queue.sublist(1));
+    return _play(state.queue.first);
+  }
+
+  Future<void> playQueue(List<PlayableMedia> queue) async {
+    state = state.copyWith(queue: queue, passed: Duration.zero);
+    if (queue.isEmpty) return stopAll();
+    await _play(queue.first);
+  }
+
+  Future<void> addToQueue(PlayableMedia media) async {
+    state = state.copyWith(queue: [...state.queue, media]);
+    if (state.queue.length == 1) {
+      return _play(state.queue.first);
     }
   }
 
-  FutureOr<void> togglePlay() {
+  Future<void> _play(PlayableMedia media) async {
+    await _audioPlayer.stop();
+    if (media is LocalMedia) {
+      await _audioPlayer.play(DeviceFileSource(media.file.path));
+    } else {
+      throw Exception("Unplayable media");
+    }
+    state = state.copyWith(
+      history: [...state.history, media],
+    );
+  }
+
+  Future<void> shuffleQueue() async {
+    if (state.queue.length <= 1) return;
+
+    state = state.copyWith(queue: [
+      state.queue.first,
+      ...state.queue.sublist(1)..shuffle(),
+    ]);
+  }
+
+  FutureOr<void> togglePlay() async {
     switch (_audioPlayer.state) {
       case PlayerState.playing:
         return _audioPlayer.pause();
       case PlayerState.paused:
         return _audioPlayer.resume();
       default:
-        break;
+        return;
     }
   }
 
-  Future<void> seek(Duration position) {
-    return _audioPlayer.seek(position);
+  void toggleLoop() {
+    state = state.copyWith(loop: !state.loop);
+  }
+
+  Future<void> seek(Duration position) async {
+    await _audioPlayer.seek(position);
   }
 }
 
