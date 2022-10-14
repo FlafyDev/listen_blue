@@ -18,30 +18,26 @@ class PlaylistList extends HookConsumerWidget {
     final mediaInfo = ref.watch(mediaInfoProvider);
     final playlists = ref.watch(playlistsProvider);
 
-    return playlists.when(
-      error: (err, trace) => const Text("Error"),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      data: (playlists) => ImprovedScrolling(
-        scrollController: scrollController,
-        enableCustomMouseWheelScrolling: true,
-        child: ListView.builder(
-          controller: scrollController,
-          itemCount: playlists.length,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            final playlist = playlists[index];
-            return _PlaylistTile(
-              playlist: playlist,
-              active: false,
-              onPressed: () {
-                ref.read(musicPlayerProvider.notifier).playQueue(playlist.ids
-                    .map((id) => mediaInfo[id])
-                    .whereType<PlayableMedia>()
-                    .toList());
-              },
-            );
-          },
-        ),
+    return ImprovedScrolling(
+      scrollController: scrollController,
+      enableCustomMouseWheelScrolling: true,
+      child: ListView.builder(
+        controller: scrollController,
+        itemCount: playlists.length,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          final playlist = playlists[index];
+          return _PlaylistTile(
+            playlist: playlist,
+            active: false,
+            onPressed: () {
+              ref.read(musicPlayerProvider.notifier).playQueue(playlist.ids
+                  .map((id) => mediaInfo[id])
+                  .whereType<PlayableMedia>()
+                  .toList());
+            },
+          );
+        },
       ),
     );
   }

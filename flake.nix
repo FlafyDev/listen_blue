@@ -1,5 +1,5 @@
 {
-  description = "GUI fetch tool written in Flutter for Linux.";
+  description = "A Music Player written in Flutter for Linux";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?rev=2277e4c9010b0f27585eb0bed0a86d7cbc079354";
@@ -11,8 +11,8 @@
       pkgs = import nixpkgs { inherit system; }; 
     in {
       packages = rec {
-        music-player = pkgs.callPackage ./nix/package.nix { };
-        default = music-player;
+        listen-blue = pkgs.callPackage ./nix/package.nix { };
+        default = listen-blue;
       };
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
@@ -42,6 +42,7 @@
           libunwind
           elfutils
           zstd
+          orc
         ];
         shellHook = ''
           export LD_LIBRARY_PATH=${pkgs.libepoxy}/lib
@@ -53,7 +54,7 @@
           inherit (prev) system;
         };
       in {
-        music-player = pkgs.callPackage ./nix/package.nix { };
+        listen-blue = pkgs.callPackage ./nix/package.nix { };
       };
     };
 }

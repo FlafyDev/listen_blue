@@ -34,21 +34,18 @@ final mediaFoldersProvider = Provider<List<Directory>>((ref) {
       : [];
 });
 
-final playlistsProvider = FutureProvider((ref) {
-  final data = ref.watch(configDataProvider);
+final playlistsProvider = Provider<List<Playlist>>((ref) {
+  final data = ref.watch(configDataProvider).value;
 
-  final completer = Completer<List<Playlist>>();
-  data.whenData((data) {
-    completer.complete((data["playlists"] as List)
-        .map((e) => Playlist(
-              title: e["title"],
-              ids: (e["ids"] as List).whereType<String>().toList(),
-              squareImage: e["squareImage"] == null
-                  ? null
-                  : FileImage(File(path.join(_folder, e["squareImage"]))),
-            ))
-        .toList());
-  });
-
-  return completer.future;
+  return data != null && data.containsKey("playlists")
+      ? (data["playlists"] as List)
+          .map((e) => Playlist(
+                title: e["title"],
+                ids: (e["ids"] as List).whereType<String>().toList(),
+                squareImage: e["squareImage"] == null
+                    ? null
+                    : FileImage(File(path.join(_folder, e["squareImage"]))),
+              ))
+          .toList()
+      : [];
 });

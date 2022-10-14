@@ -12,6 +12,7 @@ class QueueList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollController = useScrollController();
+    final theme = Theme.of(context);
 
     final queue = ref.watch(
       musicPlayerProvider.select((player) => player.queue),
@@ -27,13 +28,20 @@ class QueueList extends HookConsumerWidget {
                 onPressed: () {
                   ref.read(musicPlayerProvider.notifier).clearQueue();
                 },
-                child: const Text("Clear"),
+                child: Text(
+                  "Clear",
+                  style: theme.textTheme.bodyLarge,
+                ),
               ),
               TextButton(
                 onPressed: () {
                   ref.read(musicPlayerProvider.notifier).shuffleQueue();
                 },
-                child: const Icon(FontAwesomeIcons.shuffle, size: 15),
+                child: Icon(
+                  FontAwesomeIcons.shuffle,
+                  size: 15,
+                  color: theme.colorScheme.secondary,
+                ),
               ),
             ],
           ),

@@ -9,7 +9,7 @@
 }:
 
 flutter.mkFlutterApp {
-  pname = "music-player";
+  pname = "listen-blue";
   version = "0.0.3";
 
   src = lib.cleanSourceWith {
@@ -18,8 +18,8 @@ flutter.mkFlutterApp {
       !(baseNameOf name == "nix" || baseNameOf name == "README.md"));
   };
 
-  # vendorHashSha256 = lib.fakeSha256;
-  vendorHash = "sha256-Vgow3zza/ojLjjZovUi2Mmbq1VfAN4VWHRtX6IGvwkY=";
+  vendorHashSha256 = lib.fakeSha256;
+  # vendorHash = "sha256-Vgow3zza/ojLjjZovUi2Mmbq1VfAN4VWHRtX6IGvwkY=";
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -31,6 +31,7 @@ flutter.mkFlutterApp {
     libunwind
     elfutils
     zstd
+    orc
   ];
 
   # postFixup = ''
@@ -38,7 +39,7 @@ flutter.mkFlutterApp {
   # '';
 
   meta = with lib; {
-    description = "A Music Player";
+    description = "A Music Player written in Flutter for Linux";
     license = licenses.mit;
     platforms = platforms.linux;
   };
