@@ -6,6 +6,7 @@
   libunwind,
   elfutils,
   zstd,
+  orc,
 }:
 
 flutter.mkFlutterApp {
@@ -18,8 +19,8 @@ flutter.mkFlutterApp {
       !(baseNameOf name == "nix" || baseNameOf name == "README.md"));
   };
 
-  vendorHashSha256 = lib.fakeSha256;
-  # vendorHash = "sha256-Vgow3zza/ojLjjZovUi2Mmbq1VfAN4VWHRtX6IGvwkY=";
+  # vendorHashSha256 = lib.fakeSha256;
+  vendorHash = "sha256-hpnxRZkGUGnkDQU1+LjbsfQoHp96s6It34CvzY1bsX0=";
 
   nativeBuildInputs = [ makeWrapper ];
 
