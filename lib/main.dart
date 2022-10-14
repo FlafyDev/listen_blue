@@ -1,16 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:music_player/logic/media_folders.dart';
-import 'package:music_player/logic/player.dart';
+import 'package:music_player/logic/config.dart';
 import 'package:music_player/widgets/player_bar.dart';
-
-import 'models/media.dart';
 import 'widgets/main_view.dart';
-import 'widgets/top_bar.dart';
 
 void main() {
   // timeDilation = 3.0;
@@ -23,19 +17,32 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = ColorScheme.fromSwatch().copyWith(
-      primary: const Color.fromARGB(255, 37, 137, 144),
+      // primary: const Color.fromARGB(255, 77, 112, 183),
+      // primary: const Color.fromARGB(255, 126, 187, 229),
+      primary: const Color.fromARGB(255, 82, 175, 234),
       secondary: const Color.fromARGB(255, 248, 206, 196),
+    );
+
+    final config = ref.watch(configDataProvider);
+
+    useEffect(
+      () {
+        Window.setEffect(effect: WindowEffect.transparent);
+        return () {};
+      },
+      [],
     );
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.transparent,
         progressIndicatorTheme: ProgressIndicatorThemeData(
           color: colorScheme.primary,
           linearTrackColor: Colors.white10,
         ),
         colorScheme: colorScheme,
-        toggleableActiveColor: Color.fromARGB(255, 180, 120, 214),
+        toggleableActiveColor: const Color.fromARGB(255, 180, 120, 214),
         iconTheme: IconThemeData(color: colorScheme.secondary),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(),
@@ -45,42 +52,16 @@ class MyApp extends HookConsumerWidget {
           displayColor: colorScheme.secondary,
           bodyColor: colorScheme.secondary,
         ),
+        shadowColor: const Color.fromARGB(30, 31, 47, 67),
       ),
       home: Scaffold(
         body: Container(
-          color: Color.fromARGB(255, 35, 37, 48),
+          // color: Color.fromARGB(255, 35, 37, 48),
+          color: Color((config.value?["background_color"] as int?) ?? 0),
           child: Column(
-            children: [
-              // TopBar(),
+            children: const [
               Expanded(child: MainView()),
-              // Container(
-              //   height: 100,
-              //   child: TextButton(
-              //     child: Text("AAA"),
-              //     onPressed: () async {
-              //       // final LocalMedia media = LocalMedia(
-              //       //   id: "music",
-              //       //   file: File('/home/flafydev/Music/music.mp3'),
-              //       //   metadata: MediaMetadata(
-              //       //     title: "Dance in the Game [ORCHESTRAL]",
-              //       //     authors: ["Kikuin Date"],
-              //       //     squareImage: const NetworkImage(
-              //       //       "https://cdn.dribbble.com/users/702789/screenshots/16900790/media/628a8bb9f58f4feaea51367fc58b32a3.png?compress=1&resize=400x300",
-              //       //     ),
-              //       //   ),
-              //       // );
-              //       ref.read(musicPlayerProvider.notifier).playMedia(mediaInfo[mediaInfo.keys.first]!);
-              //        // final player = aa.AudioPlayer();
-              //        // player.play(aa.DeviceFileSource("/home/flafydev/Music/music.mp3"));
-              //        // player.onPositionChanged.listen((pos) => print(pos));
-              //       // final duration =
-              //       //     await player.setFilePath('/home/flafydev/Music/music.mp3');
-              //       // print(duration);
-              //     },
-              //   ),
-              // ),
-              // Container(child: Text(mediaInfo.length.toString())),
-              Container(child: PlayerBar()),
+              PlayerBar(),
             ],
           ),
         ),

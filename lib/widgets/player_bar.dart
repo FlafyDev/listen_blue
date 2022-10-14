@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:music_player/logic/player.dart';
-import 'package:music_player/models/media.dart';
 import 'package:music_player/widgets/media_horizontal_card.dart';
 
 class PlayerBar extends HookConsumerWidget {
@@ -16,7 +15,7 @@ class PlayerBar extends HookConsumerWidget {
 
     return Container(
       height: 80,
-      color: Colors.black12,
+      color: theme.shadowColor,
       child: Stack(
         children: [
           Column(
@@ -51,44 +50,57 @@ class PlayerBar extends HookConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 200,
                             height: double.infinity,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(FontAwesomeIcons.backwardStep, size: 20),
-                                SizedBox(width: 5),
-                                _PressableIcon(
-                                  onTap: () {
-                                    ref
-                                        .read(musicPlayerProvider.notifier)
-                                        .togglePlay();
-                                  },
-                                  child: Icon(
-                                    player.playing
-                                        ? FontAwesomeIcons.pause
-                                        : FontAwesomeIcons.play,
-                                    size: 30,
-                                    color: theme.colorScheme.primary,
+                                Opacity(
+                                  opacity: 0.7,
+                                  child: _PressableIcon(
+                                    onTap: () {
+                                      ref
+                                          .read(musicPlayerProvider.notifier)
+                                          .togglePlay();
+                                    },
+                                    child: Icon(
+                                      player.playing
+                                          ? FontAwesomeIcons.pause
+                                          : FontAwesomeIcons.play,
+                                      size: 30,
+                                      color: theme.colorScheme.primary,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(width: 5),
-                                Icon(FontAwesomeIcons.forwardStep, size: 20),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 5),
                                 _PressableIcon(
                                   onTap: () {
                                     ref
                                         .read(musicPlayerProvider.notifier)
-                                        .shuffleQueue();
+                                        .nextInQueue();
+                                  },
+                                  child: const Icon(
+                                      FontAwesomeIcons.forwardStep,
+                                      size: 20),
+                                ),
+                                const SizedBox(width: 10),
+                                _PressableIcon(
+                                  onTap: () {
+                                    ref
+                                        .read(musicPlayerProvider.notifier)
+                                        .toggleShuffle();
                                   },
                                   child: Icon(
                                     FontAwesomeIcons.shuffle,
+                                    color: player.shuffle
+                                        ? theme.toggleableActiveColor
+                                        : null,
                                     size: 20,
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 _PressableIcon(
                                   onTap: () {
                                     ref
@@ -106,7 +118,7 @@ class PlayerBar extends HookConsumerWidget {
                               ],
                             ),
                           ),
-                          SizedBox(width: 50),
+                          const SizedBox(width: 50),
                           // Spacer(),
                           if (player.queue.isNotEmpty)
                             Flexible(
@@ -115,6 +127,7 @@ class PlayerBar extends HookConsumerWidget {
                                     const BoxConstraints(maxWidth: 300),
                                 child: MediaHorizontalCard(
                                   media: player.queue.first,
+                                  color: theme.colorScheme.primary,
                                 ),
                               ),
                             ),
@@ -172,10 +185,10 @@ class _PressableIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: InkWell(
-        onTap: onTap,
+    return GestureDetector(
+      onTap: onTap,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
         child: child,
       ),
     );

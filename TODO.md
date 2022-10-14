@@ -1,0 +1,3 @@
+- make themes and blur theme like guifetch
+- add reaction for shuffle button
+- NOT DO make prevQueue button work (use history)

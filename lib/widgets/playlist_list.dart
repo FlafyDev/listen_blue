@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:music_player/logic/media_folders.dart';
 import 'package:music_player/logic/player.dart';
@@ -11,27 +13,35 @@ class PlaylistList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scrollController = useScrollController();
+
     final mediaInfo = ref.watch(mediaInfoProvider);
     final playlists = ref.watch(playlistsProvider);
 
     return playlists.when(
       error: (err, trace) => const Text("Error"),
       loading: () => const Center(child: CircularProgressIndicator()),
-      data: (playlists) => ListView.builder(
-        itemCount: playlists.length,
-        itemBuilder: (context, index) {
-          final playlist = playlists[index];
-          return _PlaylistTile(
-            playlist: playlist,
-            active: false,
-            onPressed: () {
-              ref.read(musicPlayerProvider.notifier).playQueue(playlist.ids
-                  .map((id) => mediaInfo[id])
-                  .whereType<PlayableMedia>()
-                  .toList());
-            },
-          );
-        },
+      data: (playlists) => ImprovedScrolling(
+        scrollController: scrollController,
+        enableCustomMouseWheelScrolling: true,
+        child: ListView.builder(
+          controller: scrollController,
+          itemCount: playlists.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            final playlist = playlists[index];
+            return _PlaylistTile(
+              playlist: playlist,
+              active: false,
+              onPressed: () {
+                ref.read(musicPlayerProvider.notifier).playQueue(playlist.ids
+                    .map((id) => mediaInfo[id])
+                    .whereType<PlayableMedia>()
+                    .toList());
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -59,7 +69,7 @@ class _PlaylistTile extends StatelessWidget {
         onPressed: onPressed,
         style: TextButton.styleFrom(
           padding: const EdgeInsets.all(20),
-          backgroundColor: Colors.black12,
+          backgroundColor: theme.shadowColor,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -78,4 +78,3 @@ class TopBar extends HookConsumerWidget {
     );
   }
 }
-

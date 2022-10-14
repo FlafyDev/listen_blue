@@ -53,7 +53,9 @@ class MediaMetadata with _$MediaMetadata {
     return MediaMetadata(
       title: json["title"] as String,
       authors: json["authors"] as List<String>,
-      squareImage: json["squareImage"] == null ? null : FileImage(File(json["squareImage"] as String)),
+      squareImage: json["squareImage"] == null
+          ? null
+          : FileImage(File(json["squareImage"] as String)),
     );
   }
 }

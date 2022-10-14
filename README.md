@@ -1,16 +1,52 @@
-# music_player
+# ListenBlue
+A music player written in Flutter for Linux. (GStreamer)
 
-A new Flutter project.
+## Configuration
+### `config.toml`
+Example for `~/.config/music_player/config.toml`
+```toml
+collections = [
+  "~/Music/music_files_1",
+]
 
-## Getting Started
+background_color = 0x7600000F
 
-This project is a starting point for a Flutter application.
+[[playlists]]
+title = "My Cool Playlist"
+ids = [
+  "ding_orch",
+  "raindrop_flower_ereve",
+  "night_market_piano",
+]
+```
 
-A few resources to get you started if this is your first Flutter project:
+### Collections
+A collection is a folder to bind metadata to mp3s
+A folder structure for a collection may be:
+```
+music_files_1
+| collection.toml
+| ding_orch.mp3
+| kikuin_date.jpeg
+| night_market_piano.mp3
+| paintamelody.png
+| pinacoco.jpg
+| raindrop_flower_ereve.mp3
+```
+And the `collection.toml` file will be:
+```toml
+[ding_orch]
+title = "Dance in the Game [ORCHESTRAL]"
+authors = [ "Kikuin Date" ]
+squareImage = "kikuin_date.jpeg"
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+[raindrop_flower_ereve]
+title = "Raindrop Flower (Ereve)"
+authors = [ "Paintamelody" ]
+squareImage = "paintamelody.png"
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[night_market_piano]
+title = "🍍Night Market - [Maplestory] - Piano Cover🥥"
+authors = [ "PinaCoco" ]
+squareImage = "pinacoco.jpg"
+```

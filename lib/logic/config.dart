@@ -9,7 +9,7 @@ import 'package:toml/toml.dart';
 final String _folder = path.joinAll(
     [Platform.environment['HOME'] as String, ".config", "music_player"]);
 
-final _configDataProvider = StreamProvider<Map<String, dynamic>>((ref) async* {
+final configDataProvider = StreamProvider<Map<String, dynamic>>((ref) async* {
   final file = File(path.joinAll([_folder, "config.toml"]));
 
   if (!await file.exists()) {
@@ -25,16 +25,17 @@ final _configDataProvider = StreamProvider<Map<String, dynamic>>((ref) async* {
 });
 
 final mediaFoldersProvider = Provider<List<Directory>>((ref) {
-  final data = ref.watch(_configDataProvider).value;
-  return data != null && data.containsKey("media")
-      ? (data["media"] as List)
-          .map((media) => Directory((media as String).replaceFirst(RegExp("^~"), Platform.environment["HOME"] as String)))
+  final data = ref.watch(configDataProvider).value;
+  return data != null && data.containsKey("collections")
+      ? (data["collections"] as List)
+          .map((media) => Directory((media as String).replaceFirst(
+              RegExp("^~"), Platform.environment["HOME"] as String)))
           .toList()
       : [];
 });
 
 final playlistsProvider = FutureProvider((ref) {
-  final data = ref.watch(_configDataProvider);
+  final data = ref.watch(configDataProvider);
 
   final completer = Completer<List<Playlist>>();
   data.whenData((data) {

@@ -32,7 +32,8 @@ Future<MediaCollectionFile> _loadCollection(File collectionFile) async {
           file: File(path.join(collectionFile.parent.path, "$key.mp3")),
           metadata: MediaMetadata(
             title: value["title"] as String,
-            authors: (value["authors"] as List?)?.whereType<String>().toList() ?? [],
+            authors:
+                (value["authors"] as List?)?.whereType<String>().toList() ?? [],
             squareImage: value["squareImage"] == null
                 ? null
                 : FileImage(File(path.join(

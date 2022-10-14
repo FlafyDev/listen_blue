@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:music_player/models/media.dart';
 
 class MediaHorizontalCard extends StatelessWidget {
-  const MediaHorizontalCard({Key? key, required this.media, this.color})
-      : super(key: key);
+  const MediaHorizontalCard({
+    Key? key,
+    required this.media,
+    this.color,
+  }) : super(key: key);
 
   final PlayableMedia media;
   final Color? color;
@@ -15,14 +18,24 @@ class MediaHorizontalCard extends StatelessWidget {
     return Row(
       children: [
         if (media.metadata.squareImage != null)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4.0),
-            child: Image(
-              image: media.metadata.squareImage!,
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.medium,
+          Container(
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black87,
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4.0),
+              child: Image(
+                image: media.metadata.squareImage!,
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.medium,
+              ),
             ),
           ),
         const SizedBox(width: 10, height: 40),

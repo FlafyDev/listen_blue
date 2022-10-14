@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:music_player/logic/media_folders.dart';
 import 'package:music_player/logic/player.dart';
@@ -10,28 +12,34 @@ class MediaList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scrollController = useScrollController();
+
     final mediaInfo = ref.watch(mediaInfoProvider);
     final queue = ref.watch(
       musicPlayerProvider.select((player) => player.queue),
     );
 
-    return ListView.builder(
-      itemCount: mediaInfo.keys.length,
-      itemBuilder: (context, index) {
-        final media = mediaInfo.values.toList()[index];
-        return MediaTile(
-          media: media,
-          active: queue.isNotEmpty
-              ? queue.first.id == media.id
-              : false,
-          onPressed: () {
-            ref.read(musicPlayerProvider.notifier).playQueue([media]);
-          },
-          onLongPressed: () {
-            ref.read(musicPlayerProvider.notifier).addToQueue(media);
-          },
-        );
-      },
+    return ImprovedScrolling(
+      scrollController: scrollController,
+      enableCustomMouseWheelScrolling: true,
+      child: ListView.builder(
+        controller: scrollController,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: mediaInfo.keys.length,
+        itemBuilder: (context, index) {
+          final media = mediaInfo.values.toList()[index];
+          return MediaTile(
+            media: media,
+            active: queue.isNotEmpty ? queue.first.id == media.id : false,
+            onPressed: () {
+              ref.read(musicPlayerProvider.notifier).addToTopQueue(media);
+            },
+            onLongPressed: () {
+              ref.read(musicPlayerProvider.notifier).addToQueue(media);
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -61,7 +69,7 @@ class MediaTile extends StatelessWidget {
         onLongPress: onLongPressed,
         style: TextButton.styleFrom(
           padding: const EdgeInsets.all(20),
-          backgroundColor: Colors.black12,
+          backgroundColor: theme.shadowColor,
         ),
         child: MediaHorizontalCard(
           media: media,

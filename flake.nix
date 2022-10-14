@@ -11,8 +11,8 @@
       pkgs = import nixpkgs { inherit system; }; 
     in {
       packages = rec {
-        guifetch = pkgs.callPackage ./nix/package.nix { };
-        default = guifetch;
+        music-player = pkgs.callPackage ./nix/package.nix { };
+        default = music-player;
       };
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
@@ -53,7 +53,7 @@
           inherit (prev) system;
         };
       in {
-        guifetch = pkgs.callPackage ./nix/package.nix { };
+        music-player = pkgs.callPackage ./nix/package.nix { };
       };
     };
 }

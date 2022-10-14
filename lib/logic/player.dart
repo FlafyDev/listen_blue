@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:music_player/models/media.dart';
@@ -67,7 +64,12 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayer> {
   Future<void> playQueue(List<PlayableMedia> queue) async {
     state = state.copyWith(queue: queue, passed: Duration.zero);
     if (queue.isEmpty) return stopAll();
+    if (state.shuffle) await shuffleQueue();
     await _play(queue.first);
+  }
+
+  Future<void> addToTopQueue(PlayableMedia media) async {
+    await playQueue([media, ...state.queue]);
   }
 
   Future<void> addToQueue(PlayableMedia media) async {
@@ -75,6 +77,10 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayer> {
     if (state.queue.length == 1) {
       return _play(state.queue.first);
     }
+  }
+
+  void clearQueue() {
+    state = state.copyWith(queue: [state.queue.first]);
   }
 
   Future<void> _play(PlayableMedia media) async {
@@ -113,11 +119,17 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayer> {
     state = state.copyWith(loop: !state.loop);
   }
 
+  void toggleShuffle() {
+    state = state.copyWith(shuffle: !state.shuffle);
+    if (state.shuffle) {
+      shuffleQueue();
+    }
+  }
+
   Future<void> seek(Duration position) async {
     await _audioPlayer.seek(position);
   }
 }
-
 
 // final progressProvider = StreamProvider<Duration>((ref) {
 //   final player = ref.watch(playerProvider);
