@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:music_player/models/media.dart';
+import 'package:listen_blue/models/media.dart';
 
 final musicPlayerProgressProvider = Provider<double>((ref) {
   final player = ref.watch(musicPlayerProvider);

@@ -3,7 +3,7 @@ A music player written in Flutter for Linux. (GStreamer)
 
 ## Configuration
 ### `config.toml`
-Example for `~/.config/music_player/config.toml`
+Example for `~/.config/listen_blue/config.toml`
 ```toml
 collections = [
   "~/Music/music_files_1",

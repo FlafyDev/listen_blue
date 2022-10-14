@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/logic/player.dart';
+import 'package:listen_blue/logic/player.dart';
 import 'media_list.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 

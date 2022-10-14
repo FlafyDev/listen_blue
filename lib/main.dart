@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/logic/config.dart';
-import 'package:music_player/widgets/player_bar.dart';
+import 'package:listen_blue/logic/config.dart';
+import 'package:listen_blue/widgets/player_bar.dart';
 import 'widgets/main_view.dart';
 
 void main() {

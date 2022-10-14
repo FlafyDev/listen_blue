@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/models/media.dart';
+import 'package:listen_blue/models/media.dart';
 
 class MediaHorizontalCard extends StatelessWidget {
   const MediaHorizontalCard({

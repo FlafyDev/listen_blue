@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/logic/player.dart';
+import 'package:listen_blue/logic/player.dart';
 import 'media_list.dart';
 
 class QueueList extends HookConsumerWidget {

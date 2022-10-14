@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/models/media.dart';
+import 'package:listen_blue/models/media.dart';
 import 'package:path/path.dart' as path;
 import 'package:toml/toml.dart';
 

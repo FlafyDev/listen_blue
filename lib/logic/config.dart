@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/models/playlist.dart';
+import 'package:listen_blue/models/playlist.dart';
 import 'package:path/path.dart' as path;
 import 'package:toml/toml.dart';
 
 final String _folder = path.joinAll(
-    [Platform.environment['HOME'] as String, ".config", "music_player"]);
+    [Platform.environment['HOME'] as String, ".config", "listen_blue"]);
 
 final configDataProvider = StreamProvider<Map<String, dynamic>>((ref) async* {
   final file = File(path.joinAll([_folder, "config.toml"]));

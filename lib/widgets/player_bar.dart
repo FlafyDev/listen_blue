@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/logic/player.dart';
-import 'package:music_player/widgets/media_horizontal_card.dart';
+import 'package:listen_blue/logic/player.dart';
+import 'package:listen_blue/widgets/media_horizontal_card.dart';
 
 class PlayerBar extends HookConsumerWidget {
   const PlayerBar({Key? key}) : super(key: key);

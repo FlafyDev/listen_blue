@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:music_player/logic/media_folders.dart';
-import 'package:music_player/logic/player.dart';
-import 'package:music_player/models/media.dart';
-import 'package:music_player/widgets/media_horizontal_card.dart';
+import 'package:listen_blue/logic/media_folders.dart';
+import 'package:listen_blue/logic/player.dart';
+import 'package:listen_blue/models/media.dart';
+import 'package:listen_blue/widgets/media_horizontal_card.dart';
 
 class MediaList extends HookConsumerWidget {
   const MediaList({Key? key}) : super(key: key);
