@@ -31,10 +31,27 @@
         "type": "github"
       }
     },
+    "pub2nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1658857493,
+        "narHash": "sha256-1JdcFEmjwlr0NGNbB3fgYqaUZPJbaFnxYifNPoL3bio=",
+        "owner": "cir0x",
+        "repo": "pub2nix",
+        "rev": "47e6ab2e061e0c7a0ae6a949a8c6b34daf3ac298",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cir0x",
+        "repo": "pub2nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "pub2nix": "pub2nix"
       }
     }
   },

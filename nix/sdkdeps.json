@@ -1,0 +1,77 @@
+{
+  "flutter_patched_sdk": {
+    "hash": "sha256-5lBKB/hTQkuIWq2RDm2XqWRj3Rt/VBVcQjVC0H/CgWo=",
+    "stripRoot": true,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/flutter_patched_sdk.zip"
+  },
+  "flutter_patched_sdk_product": {
+    "hash": "sha256-+IqPY1/x0AdHJdVg6Vsil4TsFVnW2QfPOT2IniswxPY=",
+    "stripRoot": true,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/flutter_patched_sdk_product.zip"
+  },
+  "gradle_wrapper": {
+    "hash": "sha256-SRgOgd0iOFw8cD09GYjPOz9KJkxJg9ORD5ybELVSrk4=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/gradle-wrapper/fd5c1f2c013565a3bea56ada6df9d2b8e96d56aa/gradle-wrapper.tgz"
+  },
+  "ios-deploy": {
+    "hash": "sha256-1uUPy6Gj1tff7Ud9FrL0+9NH0dp2nL9PagGW2CogWqY=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/ios-usb-dependencies/ios-deploy/ee3aec1a303dd0b52bb7b798b5a25c20e2614733/ios-deploy.zip"
+  },
+  "libimobiledevice": {
+    "hash": "sha256-1DMAvLN0SOxFOEy4Zta+uGMPiYqoP4DPDiBVgmp9wVY=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/ios-usb-dependencies/libimobiledevice/2ba8188ed97d8b05670845e5b5954e2fe0f54784/libimobiledevice.zip"
+  },
+  "libplist": {
+    "hash": "sha256-wiSG9JKCZq2o30d43i203vpRim5Wb3dysQkL4HNrJo4=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/ios-usb-dependencies/libplist/20a2f8dbddcf1a96ad4c720b9afd1d0876d17ffc/libplist.zip"
+  },
+  "linux-x64-artifacts": {
+    "hash": "sha256-GvLhf08qiLwI6ky6TAMeXummzXPLmYkdBdOglX3uPLs=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/linux-x64/artifacts.zip"
+  },
+  "linux-x64-font-subset": {
+    "hash": "sha256-cFDq/sO4Ot6Psb3QrCh+22zMWjxOhkIIjbnoalTOxYM=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/linux-x64/font-subset.zip"
+  },
+  "material_fonts": {
+    "hash": "sha256-lmUjv2KDZqLbvBQJrcd2SkWyvYvOrqc1p+KBVPm6YqQ=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/fonts/d76e4de0ef19d04a55bf3117322be9ced21864aa/fonts.zip"
+  },
+  "openssl": {
+    "hash": "sha256-nT4oYUb1hX1B1gz6/c/+1QKC1xgz+FUEvYZgYPAMNxM=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/ios-usb-dependencies/openssl/e2e09d9fba1187f8d6aafaa34d4172f56f1ffb72/openssl.zip"
+  },
+  "sky_engine": {
+    "hash": "sha256-oEoZp2DXwIKFTqXQuXSTTYveXyTD5hwVONkJNHBlMpc=",
+    "stripRoot": true,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/sky_engine.zip"
+  },
+  "usbmuxd": {
+    "hash": "sha256-KC/ZITgQn3YUnyBgI6t7rhWoEvSbHvzwiswS60efzFA=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/ios-usb-dependencies/usbmuxd/c7d7d1a03f65a27be2eddb13d1f2b0c0e7a60ec6/usbmuxd.zip"
+  },
+  "linux-x64-linux-x64-flutter-gtk": {
+    "hash": "sha256-6WsO0Tu1gxPAmZDpr1Al8YjqlLGucwpPDNgbKGQwgI0=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/linux-x64/linux-x64-flutter-gtk.zip"
+  },
+  "linux-x64-profile-linux-x64-flutter-gtk": {
+    "hash": "sha256-7yG5QHzj98LHLTiL2dryxJTk9CYLW8vNfv6RkfJ97F8=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/linux-x64-profile/linux-x64-flutter-gtk.zip"
+  },
+  "linux-x64-release-linux-x64-flutter-gtk": {
+    "hash": "sha256-DKFk2B8gME/eUtAHLggLFodj/nqDK/M+rLVWtFCxhUM=",
+    "stripRoot": false,
+    "url": "https://storage.googleapis.com/flutter_infra_release/flutter/b3af521a050e6ef076778bcaf16e27b2521df8f8/linux-x64-release/linux-x64-flutter-gtk.zip"
+  }
+}
