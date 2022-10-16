@@ -1,6 +1,12 @@
 # ListenBlue
 A music player written in Flutter for Linux. (GStreamer)
 
+
+
+https://user-images.githubusercontent.com/44374434/196052980-925ab655-43b9-4e30-9726-b852f44f90fa.mp4
+
+
+
 ## Configuration
 ### `config.toml`
 Example for `~/.config/listen_blue/config.toml`
