@@ -22,9 +22,7 @@
         {
           packages = rec {
             listen-blue = pkgs.callPackage ./nix/package.nix {
-              buildFlutterApp = pkgs.callPackage ./nix/build-flutter-app.nix {
-                yamlLib = import "${pub2nix}/yaml.nix" { inherit pkgs; };
-              };
+              buildFlutterApp = pkgs.callPackage ./nix/build-flutter-app.nix { };
               mkFlutterApp = pkgs.callPackage ./nix/mk-flutter-app.nix { };
             };
             default = listen-blue;

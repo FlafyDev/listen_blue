@@ -1,6 +1,5 @@
 { flutter
 , lib
-, llvmPackages_13
 , cmake
 , ninja
 , pkg-config
@@ -13,195 +12,71 @@
 , libdatrie
 , libxkbcommon
 , at-spi2-core
-, libsecret
-, jsoncpp
 , xorg
 , dbus
 , gtk3
 , glib
 , pcre
 , libepoxy
-, stdenvNoCC
-, cacert
 , git
 , dart
-, nukeReferences
-, targetPlatform
 , bash
 , curl
 , unzip
 , which
 , xz
-, yamlLib
 , stdenv
 , fetchzip
-, makeWrapper
 , runCommand
 , clang
-, atk
-, cairo
-, epoxy
-, gdk-pixbuf
-, pango
-, harfbuzz
-, gnugrep
-, gst_all_1
-, libunwind
-, elfutils
-, zstd
-, orc
+, tree
 }:
 
-{ pname
-, version
-, specFile
-, lockFile
-, dartFlags ? [ ]
-, buildDir ? "build"
-, buildType ? "release"
-, src ? null
-, srcs ? null
-, ...
-}@args:
+args:
 
 let
-  inherit (builtins)
-    mapAttrs
-    foldl'
-    attrValues
-    ;
-
   inherit (lib)
     importJSON
-    concatStringsSep
-    removePrefix
-    filter
     mapAttrsToList
-    concatStrings
     makeLibraryPath
-    makeSearchPath
     ;
 
-  # exportEnvVar = key: value: ''
-  #   export ${key}="${value}"
-  # '';
-  #
-  # exportEnvVars = envVars:
-  #   concatStrings (mapAttrsToList exportEnvVar envVars);
+  deps = importJSON (args.depsFile or (args.src + "/deps2nix.lock"));
 
-  createCacheStamp = { name, from ? name }: ''
-    ln -s \
-      "${flutter.unwrapped}/bin/internal/${from}.version" \
-      "${name}.stamp"
-  '';
+  pubCache = (runCommand "${args.pname}-pub-cache" { } (mapAttrsToList
+    (path: dep:
+      let
+        derv = fetchzip dep;
+      in
+      ''
+        mkdir -p $out/${dirOf path}
+        ln -s ${derv} $out/${path}
+      '')
+    deps.pub));
 
-  specFile' = yamlLib.readYAML specFile;
-  lockFile' = yamlLib.readYAML lockFile;
-
-  pubCache =
-    let
-      step = (state: package:
-        let
-          pubCachePathParent = concatStringsSep "/" [
-            "$out"
-            package.source
-            (removePrefix "https://" package.description.url)
-          ];
-          pubCachePath = concatStringsSep "/" [
-            pubCachePathParent
-            "${package.description.name}-${package.version}"
-          ];
-          nixStorePath = fetchzip {
-            inherit (package) sha256;
-            stripRoot = false;
-            url = concatStringsSep "/" [
-              package.description.url
-              "packages"
-              package.description.name
-              "versions"
-              "${package.version}.tar.gz"
-            ];
-          };
-        in
-        state + ''
-          mkdir -p ${pubCachePathParent}
-          ln -s ${nixStorePath} ${pubCachePath}
-        ''
-      );
-
-      synthesize =
-        foldl' step "" (filter (pkg: pkg.source == "hosted") (attrValues lockFile'.packages));
-    in
-    runCommand "${pname}-pub-cache" { } synthesize;
-  sdkDeps = mapAttrs (_: fetchzip) (importJSON ../sdkdeps2nix.lock);
+  # ~/.cache/flutter/<cache files>
+  cache = (runCommand "${args.pname}-cache" { } ((mapAttrsToList
+    (_name: sdk:
+      let
+        derv = fetchzip (removeAttrs sdk [ "cachePath" ]);
+      in
+      ''
+        mkdir -p $out/${sdk.cachePath}
+        ln -s ${derv}/* $out/${sdk.cachePath}
+      '')
+    deps.sdk.artifacts) ++ (mapAttrsToList
+    (name: version: ''
+      echo ${version} > $out/${name}.stamp
+    '')
+    deps.sdk.stamps)));
 in
-stdenv.mkDerivation (rec {
-  # nativeBuildInputs = (args.nativeBuildInputs or [ ]) ++ [
-  #   makeWrapper
-  #   cmake
-  #   dart
-  #   at-spi2-core.dev
-  #   clang
-  #   cmake
-  #   dart
-  #   dbus.dev
-  #   flutter
-  #   gtk3
-  #   libdatrie
-  #   libepoxy.dev
-  #   libselinux
-  #   libsepol
-  #   libthai
-  #   libxkbcommon
-  #   ninja
-  #   pcre
-  #   pkg-config
-  #   util-linux.dev
-  #   xorg.libXdmcp
-  #   xorg.libXtst
-  #   gst_all_1.gstreamer
-  #   gst_all_1.gst-libav
-  #   gst_all_1.gst-plugins-base
-  #   gst_all_1.gst-plugins-good
-  #   libunwind
-  #   elfutils
-  #   zstd
-  #   orc
-  # ];
-  #
-  # buildInputs = (args.buildInputs or [ ]) ++ [
-  #   gtk3
-  #   glib
-  #   pcre
-  #   util-linux
-  #   # also required by cmake, not sure if really needed or dep of all packages
-  #   libselinux
-  #   libsepol
-  #   libthai
-  #   libdatrie
-  #   xorg.libXdmcp
-  #   xorg.libXtst
-  #   libxkbcommon
-  #   dbus
-  #   at-spi2-core
-  #   libsecret
-  #   jsoncpp
-  #   # build deps
-  #   xorg.libX11
-  #   # directly required by build
-  #   libepoxy
-  #   wrapGAppsHook
-  # ];
+stdenv.mkDerivation (args // rec {
   nativeBuildInputs = [
-   # flutter dev tools
     cmake
     ninja
     pkg-config
     wrapGAppsHook
-    # flutter likes dynamic linking
     autoPatchelfHook
-    # flutter deps
-    # flutter.unwrapped
     bash
     curl
     flutter.dart
@@ -209,9 +84,12 @@ stdenv.mkDerivation (rec {
     unzip
     which
     xz
-  ];
+
+    # Testing
+    tree
+  ] ++ (args.nativeBuildInputs or [ ]);
+
   buildInputs = [
-    # flutter.unwrapped
     at-spi2-core.dev
     clang
     cmake
@@ -235,139 +113,27 @@ stdenv.mkDerivation (rec {
     glib
     pcre
     util-linux
-
-    gst_all_1.gstreamer
-    gst_all_1.gst-libav
-    gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-good
-    libunwind
-    elfutils
-    zstd
-    orc
-    # also required by cmake, not sure if really needed or dep of all packages
-    # libselinux
-    # libsepol
-    # libthai
-    # libdatrie
-    # xorg.libXdmcp
-    # xorg.libXtst
-    # libxkbcommon
-    # dbus
-    # at-spi2-core
-    # libsecret
-    # jsoncpp
-    # # build deps
-    # xorg.libX11
-    # # directly required by build
-    # libepoxy
-  ];
+  ] ++ (args.buildInputs or [ ]);
 
   PUB_CACHE = toString pubCache;
-  NIX_LDFLAGS = "-rpath ${lib.makeLibraryPath [
-    # cmake deps
-    gtk3
-    glib
-    pcre
-    util-linux
-    # also required by cmake, not sure if really needed or dep of all packages
-    libselinux
-    libsepol
-    libthai
-    libdatrie
-    xorg.libXdmcp
-    xorg.libXtst
-    libxkbcommon
-    dbus
-    at-spi2-core
-    libsecret
-    jsoncpp
-    # build deps
-    xorg.libX11
-    # directly required by build
-    libepoxy
-  ]}";
-  # NIX_CFLAGS_COMPILE = "-I${xorg.libX11}/include";
-  # LD_LIBRARY_PATH = lib.makeLibraryPath [
-  #   # build deps
-  #   xorg.libX11
-  #   # directly required by build
-  #   libepoxy
-  # ];
+  LD_LIBRARY_PATH = makeLibraryPath [ libepoxy ];
+  NIX_LDFLAGS = "-rpath ${lib.makeLibraryPath buildInputs}";
 
-  # CPATH = with xorg; makeSearchPath "include" [
-  #   libX11.dev # X11/Xlib.h
-  #   xorgproto # X11/X.h
-  #   cairo.dev
-  #   gst_all_1.gstreamer.dev
-  #   gst_all_1.gstreamer
-  # ];
-  LD_LIBRARY_PATH="${libepoxy}/lib";
-  # LD_LIBRARY_PATH = makeLibraryPath [
-  #   # cmake deps
-  #   gtk3
-  #   glib
-  #   pcre
-  #   util-linux
-  #   # also required by cmake, not sure if really needed or dep of all packages
-  #   libselinux
-  #   libsepol
-  #   libthai
-  #   libdatrie
-  #   xorg.libXdmcp
-  #   xorg.libXtst
-  #   libxkbcommon
-  #   dbus
-  #   at-spi2-core
-  #   libsecret
-  #   jsoncpp
-  #   # build deps
-  #   xorg.libX11
-  #   # directly required by build
-  #   libepoxy
-  # ];
-
-  # outputHash = lib.fakeSha256;
-  # outputHashAlgo = "sha256";
-
-  dontUseCmakeConfigure = true;
-
-  configurePhase = with sdkDeps; ''
+  configurePhase = ''
     runHook preConfigure
 
     HOME=$(mktemp -d)
 
-    mkdir -p "$HOME"/.cache/flutter/{artifacts,pkg}
-    mkdir -p "$HOME"/.cache/flutter/artifacts/engine/{common,linux-x64}
-    
-    pushd "$HOME/.cache/flutter"
-    
-    ln -s ${material-fonts} artifacts/material_fonts
-    
-    ln -s ${gradle-wrapper} artifacts/gradle_wrapper
-    
-    ln -s ${sky-engine} pkg/sky_engine
-    ln -s ${flutter-patched-sdk} artifacts/engine/common/flutter_patched_sdk
-    ln -s ${flutter-patched-sdk-product} artifacts/engine/common/flutter_patched_sdk_product
-    ln -s ${linux-x64-artifacts}/* artifacts/engine/linux-x64
-    
-    ln -s ${linux-x64-font-subset}/* artifacts/engine/linux-x64
-    
-    ln -s ${linux-x64-linux-x64-flutter-gtk}/* artifacts/engine/linux-x64
-    ln -s ${linux-x64-profile-linux-x64-flutter-gtk} artifacts/engine/linux-x64-profile
-    ln -s ${linux-x64-release-linux-x64-flutter-gtk} artifacts/engine/linux-x64-release
-    
-    ${createCacheStamp { name = "flutter_sdk"; from = "engine"; }}
-    ${createCacheStamp { name = "font-subset"; from = "engine"; }}
-    ${createCacheStamp { name = "gradle_wrapper"; }}
-    ${createCacheStamp { name = "material_fonts"; }}
-    
-    ${createCacheStamp { name = "linux-sdk"; from = "engine"; }}
+    mkdir -p $HOME/.cache/flutter
+    cp -r ${cache}/* $HOME/.cache/flutter
+    chmod +wr -R $HOME/.cache/flutter
 
-    popd
+    # Test directories
+    # tree $HOME/.cache/flutter
+    # ls -l $PUB_CACHE/hosted/pub.dartlang.org/
 
     flutter config --no-analytics &>/dev/null # mute first-run
     flutter config --enable-linux-desktop
-    export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 
     flutter pub get --offline
 
@@ -415,75 +181,8 @@ stdenv.mkDerivation (rec {
 
     runHook postInstall
   '';
-}
-//
-(removeAttrs args [
-  "nativeBuildInputs"
-  "buildInputs"
-  "buildPhase"
-  "installPhase"
-  "passthru"
-  "meta"
-]))
 
- # shellHook =
-    #   ''
-    #     flutter config \
-    #       --enable-linux-desktop \
-    #       > /dev/null
-    #   ''
-    #   + exportEnvVars (
-    #     let
-    #       bb = [
-    #         atk.out
-    #         cairo.out
-    #         epoxy.out
-    #         gdk-pixbuf.out
-    #         glib.out
-    #         gtk3.out
-    #         pango.out
-    #         cairo
-    #         harfbuzz.out
-    #         # cmake deps
-    #         gtk3
-    #         glib
-    #         pcre
-    #         util-linux
-    #         # also required by cmake, not sure if really needed or dep of all packages
-    #         libselinux
-    #         libthai
-    #         libdatrie
-    #         xorg.libXdmcp
-    #         xorg.libXtst
-    #         libxkbcommon
-    #         dbus
-    #         at-spi2-core
-    #         libsecret
-    #         jsoncpp
-    #         # build deps
-    #         xorg.libX11
-    #         # directly required by build
-    #         libepoxy
-    #       ];
-    #     in
-    #     {
-    #       CPATH = with xorg; makeSearchPath "include" [
-    #         libX11.dev # X11/Xlib.h
-    #         xorgproto # X11/X.h
-    #         cairo
-    #         cairo.out
-    #       ];
-    #       NIX_LDFLAGS = "-rpath ${lib.makeLibraryPath bb}";
-    #       NIX_CFLAGS_COMPILE = "-I${xorg.libX11}/include";
-    #
-    #       LD_LIBRARY_PATH = makeLibraryPath bb;
-    #     }
-    #   );
-
-
-  # ${createCacheStamp { name = "flutter_sdk"; from = "engine"; }}
-  # ${createCacheStamp { name = "font-subset"; from = "engine"; }}
-  # ${createCacheStamp { name = "gradle_wrapper"; }}
-  # ${createCacheStamp { name = "material_fonts"; }}
-  #
-  # ${createCacheStamp { name = "linux-sdk"; from = "engine"; }}
+  # outputHash = lib.fakeSha256;
+  # outputHashAlgo = "sha256";
+  # dontUseCmakeConfigure = true;
+})

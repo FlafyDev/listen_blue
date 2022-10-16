@@ -52,37 +52,18 @@ buildFlutterApp {
   specFile = ../pubspec.yaml;
   version = "0.0.1";
 
-  # src = lib.cleanSourceWith {
-  #   src = ../.;
-  #   filter = (name: type:
-  #     !(baseNameOf name == "nix" || baseNameOf name == "README.md"));
-  # };
   src = ../.;
 
-  # vendorHashSha256 = lib.fakeSha256;
-  # vendorHash = "sha256-hpnxRZkGUGnkDQU1+LjbsfQoHp96s6It34CvzY1bsX0=";
-
-  # buildInputs = [
-  #   gst_all_1.gstreamer
-  #   gst_all_1.gst-libav
-  #   gst_all_1.gst-plugins-base
-  #   gst_all_1.gst-plugins-good
-  #   libunwind
-  #   elfutils
-  #   zstd
-  #   orc
-  # ];
-  #
-  # buildInputs = [
-  #   gst_all_1.gstreamer
-  #   gst_all_1.gst-libav
-  #   gst_all_1.gst-plugins-base
-  #   gst_all_1.gst-plugins-good
-  #   libunwind
-  #   elfutils
-  #   zstd
-  #   orc
-  # ];
+  buildInputs = [
+    gst_all_1.gstreamer
+    gst_all_1.gst-libav
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    libunwind
+    elfutils
+    zstd
+    orc
+  ];
 
   # postFixup = ''
   #   wrapProgram $out/bin/guifetch --suffix PATH : ${lib.makeBinPath [ pciutils ]}
