@@ -16,10 +16,14 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final primaryColor = ref.watch(
+      configDataProvider.select((config) => config.value?.primaryColor),
+    );
+
     final colorScheme = ColorScheme.fromSwatch().copyWith(
       // primary: const Color.fromARGB(255, 77, 112, 183),
       // primary: const Color.fromARGB(255, 126, 187, 229),
-      primary: const Color.fromARGB(255, 82, 175, 234),
+      primary: primaryColor ?? const Color.fromARGB(255, 82, 175, 234),
       secondary: const Color.fromARGB(255, 248, 206, 196),
     );
 
@@ -57,7 +61,7 @@ class MyApp extends HookConsumerWidget {
       home: Scaffold(
         body: Container(
           // color: Color.fromARGB(255, 35, 37, 48),
-          color: Color((config.value?["background_color"] as int?) ?? 0),
+          color: config.value?.backgroundColor,
           child: Column(
             children: const [
               Expanded(child: MainView()),

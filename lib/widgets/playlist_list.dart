@@ -16,7 +16,9 @@ class PlaylistList extends HookConsumerWidget {
     final scrollController = useScrollController();
 
     final mediaInfo = ref.watch(mediaInfoProvider);
-    final playlists = ref.watch(playlistsProvider);
+    final playlists = ref.watch(
+      configDataProvider.select((config) => config.value?.playlists ?? []),
+    );
 
     return ImprovedScrolling(
       scrollController: scrollController,

@@ -46,18 +46,20 @@ Future<MediaCollectionFile> _loadCollection(File collectionFile) async {
 }
 
 final mediaCollectionsProvider = StreamProvider((ref) async* {
-  final folders = ref.watch(mediaFoldersProvider);
+  final mediaDirectories = ref.watch(
+    configDataProvider.select((config) => config.value?.mediaDirectories ?? []),
+  );
   final collections = <MediaCollectionFile>[];
   yield collections;
 
-  for (final folder in folders) {
+  for (final folder in mediaDirectories) {
     final File collectionFile = File(path.join(folder.path, "collection.toml"));
     collections.add(await _loadCollection(collectionFile));
   }
 
   yield collections;
 
-  for (final folder in folders) {
+  for (final folder in mediaDirectories) {
     await for (final event in folder.watch(events: FileSystemEvent.all)) {
       if (event is FileSystemModifyEvent || event is FileSystemCreateEvent) {
         if (event.isDirectory ||
