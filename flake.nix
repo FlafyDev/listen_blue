@@ -4,7 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
-    dart-flutter.url = "github:flafydev/dart-flutter-nix";
+    dart-flutter = {
+      url = "github:flafydev/dart-flutter-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, flake-utils, nixpkgs, dart-flutter }:
@@ -13,38 +16,23 @@
         let
           pkgs = import nixpkgs {
             inherit system;
-            overlays = [ dart-flutter.overlays.default ];
+            overlays = [
+              dart-flutter.overlays.default
+              self.overlays.default
+            ];
           };
         in
         {
-          packages = rec {
-            listen-blue = pkgs.callPackage ./nix/package.nix { };
-            default = listen-blue;
+          packages = {
+            inherit (pkgs) listen-blue;
+            default = pkgs.listen-blue;
           };
-          devShell = pkgs.mkShell {
-            packages = [
-              pkgs.deps2nix
-            ];
+          devShell = pkgs.mkFlutterShell {
+            linux = {
+              enable = true;
+            };
+
             buildInputs = with pkgs; [
-              at-spi2-core.dev
-              clang
-              cmake
-              dart
-              dbus.dev
-              flutter
-              gtk3
-              libdatrie
-              libepoxy.dev
-              libselinux
-              libsepol
-              libthai
-              libxkbcommon
-              ninja
-              pcre
-              pkg-config
-              util-linux.dev
-              xorg.libXdmcp
-              xorg.libXtst
               gst_all_1.gstreamer
               gst_all_1.gst-libav
               gst_all_1.gst-plugins-base
@@ -54,9 +42,6 @@
               zstd
               orc
             ];
-            shellHook = ''
-              export LD_LIBRARY_PATH=${pkgs.libepoxy}/lib
-            '';
           };
         }) // {
       overlays.default = final: prev:
